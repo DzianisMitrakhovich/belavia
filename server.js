@@ -19,6 +19,7 @@ db.on('error', err => console.log(err));
 db.once('open', () => console.log('Connected to MongoDb...'));
 
 app.get('/api/user', (req, res) => {
+  console.log('It works');
   user.findOne({ firstName: 'Dzianis' })
     .then(userData => res.send(userData))
     .catch(error => res.status(500, { error }));
