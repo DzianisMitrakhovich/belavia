@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import RegistrationForm from './components/RegistrationForm';
+// import LoginForm from './components/LoginForm';
 import './App.css';
+import LoginFormWrapper from './components/LoginForm';
 
 class App extends Component {
 
@@ -35,7 +36,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-          <RegistrationForm onChange={fields => this.onChange(fields)} />
+          <LoginFormWrapper onChange={fields => this.onChange(fields)} />
       </div>
     );
   }
