@@ -25,4 +25,8 @@ app.get('/api/user', (req, res) => {
     .catch(error => res.status(500, { error }));
 });
 
+// Routes
+let users = require('./routes/usersRoute');
+app.use('/api', users);
+
 app.listen(5000, () => console.log('Server is running'));

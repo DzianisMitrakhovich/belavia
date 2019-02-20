@@ -9,6 +9,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
+import axios from 'axios';
 
 
 export class RegisterForm extends Component {
@@ -43,6 +44,9 @@ export class RegisterForm extends Component {
                 password: ""
             });
         }
+        axios.post('/api/register', this.state)
+        .then(res => res.json())
+        .then(user => console.log(user));
     }
 
     validate = () => {
