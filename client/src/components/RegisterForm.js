@@ -11,7 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 
 
-export class LoginForm extends Component {
+export class RegisterForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -75,7 +75,7 @@ export class LoginForm extends Component {
         return (
             <MuiThemeProvider>
                 <Paper className={classes.paper}>
-                    <Typography component="h1" variant="h5">Sign in</Typography>
+                    <Typography component="h1" variant="h5">Register new user</Typography>
                     <form onSubmit={e => this.handleSubmit(e)} className={classes.form}>
                         <TextField
                             className={classes.email}
@@ -95,19 +95,9 @@ export class LoginForm extends Component {
                             type="password"
                             floatingLabelText="Password" />
                         <br />
-                        <div style={{ display: 'inline-flex' }}>
-                        <FormControlLabel
-                            control={<Checkbox value="remember" color="primary" />}
-                            label="Remember me"
-                        />
-                        <Typography component="h1" variant="body1">
-                        <Link to="/register" component={RouterLink} className={classes.Link}>Not registered?</Link>
-                        </Typography>
-                        </div>
-                        <br />
                         <RaisedButton
                             className={classes.button}
-                            label="Submit"
+                            label="Register"
                             onClick={e => this.handleSubmit(e)}
                             primary />
                     </form>
@@ -148,6 +138,4 @@ const styles = theme => ({
     }
 });
 
-const LoginFormWrapper = withStyles(styles)(LoginForm);
-
-export default LoginFormWrapper;
+export default withStyles(styles)(RegisterForm);

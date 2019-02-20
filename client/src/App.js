@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { BrowserRouter, Route } from 'react-router-dom';
 // import LoginForm from './components/LoginForm';
 import './App.css';
 import LoginFormWrapper from './components/LoginForm';
+import RegisterForm from './components/RegisterForm.js';
 
 class App extends Component {
 
@@ -35,9 +37,12 @@ class App extends Component {
 
   render() {
     return (
+      <BrowserRouter>
       <div className="App">
-          <LoginFormWrapper onChange={fields => this.onChange(fields)} />
+          <Route path="/login" render={() => (<LoginFormWrapper onChange={fields => this.onChange(fields)}/>) }> </Route>
+          <Route path="/register" render={() => (<RegisterForm onChange={fields => this.onChange(fields)}/>) }> </Route>
       </div>
+      </BrowserRouter>
     );
   }
 }
