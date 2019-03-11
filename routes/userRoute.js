@@ -22,14 +22,12 @@ router.post('/register', [
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() });
     }
-    console.log(req);
-
     const email = req.body.email;
     const password = req.body.password;
 
     console.log(email);
     console.log(password);
-    
+
     let newUser = new User({
       email,
       password
@@ -43,16 +41,41 @@ router.post('/register', [
         newUser.password = hash;
         newUser.save(function (err) {
           if (err) {
+            res.status(500).send("Error registering new user please try again");
             console.log(err);
             return;
           } else {
-            req.flash('success', 'You are now registered and can log in');
-            res.redirect('/login');
+            res.status(200).send(newUser);
           }
         })
       });
     });
   });
+
+// User login
+router.post('/login', function (req, res, next) {
+  passport.authenticate('local', function (err, isUserFound, info) {
+    if (err) {
+      console.log(err);
+      res.status(500).send();
+    };
+    if (isUserFound) {
+      console.log(info);
+      res.status(200).send();
+    } else {
+      res.status(204).send();
+    }
+  }
+  )(req, res, next)
+}
+);
+
+// User logout
+router.get('/logout', function(req, res) {
+  console.log("Logging out...");
+  req.logout();
+  res.status(200).send();
+})
 
 module.exports = router;
 

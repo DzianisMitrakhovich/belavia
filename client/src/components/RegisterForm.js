@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import Link from '@material-ui/core/Link';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import TextField from 'material-ui/TextField';
@@ -19,7 +19,9 @@ export class RegisterForm extends Component {
             email: '',
             emailError: '',
             password: '',
-            passwordError: ''
+            passwordError: '',
+            registrationCompeted: false
+
         }
     }
 
@@ -45,8 +47,10 @@ export class RegisterForm extends Component {
             });
         }
         axios.post('/api/register', this.state)
-        .then(res => res.json())
-        .then(user => console.log(user));
+            .then(this.props.onChange({
+                userRegistered: true
+            }))
+            .then(this.props.history.push('/login'));
     }
 
     validate = () => {
@@ -142,4 +146,4 @@ const styles = theme => ({
     }
 });
 
-export default withStyles(styles)(RegisterForm);
+export default withRouter(withStyles(styles)(RegisterForm));

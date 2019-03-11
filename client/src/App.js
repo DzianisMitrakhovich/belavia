@@ -1,9 +1,16 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
-// import LoginForm from './components/LoginForm';
+import { Route } from 'react-router-dom';
 import './App.css';
-import LoginFormWrapper from './components/LoginForm';
+import LoginForm from './components/LoginForm';
 import RegisterForm from './components/RegisterForm.js';
+import Home from './components/Home';
+import PrivateRoute from './components/PrivateRoute';
+import { Redirect, Switch } from 'react-router';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { loginUser} from './actions/user-actions';
+
+
 
 class App extends Component {
 
@@ -11,12 +18,16 @@ class App extends Component {
     firstName: '',
     lastName: '',
     email: '',
-    password: ''
+    password: '',
+    userRegistered: false,
+    isAuthenticated: false
   };
 
-  onChange = updatedValues => {
-    this.setState({ updatedValues });
-  };
+
+  handleRegistration = fields => {
+    this.setState(
+      {userRegistered: fields.userRegistered});
+  }
 
   componentDidMount() {
     this.callApi()
@@ -37,14 +48,25 @@ class App extends Component {
 
   render() {
     return (
-      <BrowserRouter>
       <div className="App">
-          <Route path="/login" render={() => (<LoginFormWrapper onChange={fields => this.onChange(fields)}/>) }> </Route>
-          <Route path="/register" render={() => (<RegisterForm onChange={fields => this.onChange(fields)}/>) }> </Route>
+      <Switch>
+      <PrivateRoute exact path='/' component = {Home} isAuthenticated={this.props.user.isAuthenticated}/>
+      {/* <Route exact path='/' component={Home}/> */}
+        <Route path="/login" render={() => (<LoginForm user={this.props.user} onUserLogin={this.props.onUserLogin} />)}> </Route>
+        {/* <Route path='/login' component={LoginForm}/> */}
+        <Route path="/register" render={() => (<RegisterForm onChange={fields => this.handleRegistration(fields)} />)}> </Route>
+        </Switch>
       </div>
-      </BrowserRouter>
     );
   }
 }
 
-export default App;
+const mapStateToProps = state => ({
+  user: state.user
+})
+
+const mapActionsToProps = {
+  onUserLogin: loginUser
+}
+
+export default connect(mapStateToProps, mapActionsToProps)(App);
