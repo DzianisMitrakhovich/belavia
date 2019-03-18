@@ -48,7 +48,8 @@ export class LoginForm extends Component {
                     console.log(this.props);
                     // calling user-actions
                     this.props.onUserLogin({isUserAuthenticated: true})
-                    console.log(this.props);
+                    console.log(this.props.user);
+                    this.props.history.push('/');
                 } else if (res.status === 204) {
                     this.setState(
                         {

@@ -9,6 +9,7 @@ import { Redirect, Switch } from 'react-router';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { loginUser} from './actions/user-actions';
+import Grid from '@material-ui/core/Grid';
 
 
 
@@ -30,32 +31,21 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.callApi()
-      .then(user => this.setState({
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email
-      }))
-      .catch(err => console.log(err));
   }
-  callApi = async () => {
-    const response = await fetch('/api/user');
-    const body = await response.json();
-    if (response.status !== 200) throw Error(body.message);
-    console.log(body);
-    return body;
-  };
 
   render() {
+    console.log(this.props.user.isUserAuthenticated);
     return (
       <div className="App">
+      <Grid container>
       <Switch>
-      <PrivateRoute exact path='/' component = {Home} isAuthenticated={this.props.user.isAuthenticated}/>
       {/* <Route exact path='/' component={Home}/> */}
-        <Route path="/login" render={() => (<LoginForm user={this.props.user} onUserLogin={this.props.onUserLogin} />)}> </Route>
+        <Route exact path="/login" render={() => (<LoginForm user={this.props.user} onUserLogin={this.props.onUserLogin} />)}> </Route>
         {/* <Route path='/login' component={LoginForm}/> */}
-        <Route path="/register" render={() => (<RegisterForm onChange={fields => this.handleRegistration(fields)} />)}> </Route>
+        <Route exact path="/register" render={() => (<RegisterForm onChange={fields => this.handleRegistration(fields)} />)}> </Route>
+      <PrivateRoute exact path='/' component = {Home} isAuthenticated={this.props.user.isUserAuthenticated}/>
         </Switch>
+        </Grid>
       </div>
     );
   }
