@@ -9,7 +9,7 @@ module.exports = {
     authenticate,
     getById};
 
-let User = require('../models/user');
+const User = require('../models/user');
 
 async function create(userParam) {
     const email = userParam.email;
@@ -21,7 +21,7 @@ async function create(userParam) {
     console.log(email);
     console.log(password);
 
-    let user = new User({
+    const user = new User({
       email,
       password
     });
@@ -31,7 +31,7 @@ async function create(userParam) {
         user.password = bcrypt.hashSync(password, 10);
     }
     // save user
-    await user.save();
+    user.save();
 };
 
 async function validate(req) {

@@ -7,8 +7,6 @@ import Home from './components/Home';
 import PrivateRoute from './components/PrivateRoute';
 import { Redirect, Switch } from 'react-router';
 import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { loginUser} from './actions/user-actions';
 import Grid from '@material-ui/core/Grid';
 
 
@@ -51,12 +49,5 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  user: state.user
-})
 
-const mapActionsToProps = {
-  onUserLogin: loginUser
-}
-
-export default connect(mapStateToProps, mapActionsToProps)(App);
+export default App;

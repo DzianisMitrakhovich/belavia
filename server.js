@@ -1,5 +1,4 @@
 const express = require('express');
-const app = express();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const user = require('./models/user');
@@ -7,15 +6,20 @@ const config = require('./config/config.json');
 const errorHandler = require('./util/errorHandler');
 const jwt = require('./util/jwt');
 
+mongoose.connect(config.database, { useNewUrlParser: true })
+.then(() => console.log("Starting the server"))
+.catch((err)=> {
+  console.log(`Error on startup ${err}`);
+  process.exit(1);
+})
+const db = mongoose.connection;
+db.on('error', err => console.log(err));
+db.once('open', () => console.log('Connected to MongoDb...'));
 
+const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-mongoose.connect(config.database, { useNewUrlParser: true });
-const db = mongoose.connection;
-
-db.on('error', err => console.log(err));
-db.once('open', () => console.log('Connected to MongoDb...'));
 
 // use JWT auth to secure the api
 app.use(jwt());
