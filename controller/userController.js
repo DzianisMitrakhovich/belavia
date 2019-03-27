@@ -11,11 +11,18 @@ router.get('/logout', logout);
 // router.post('/login', login);
 
 function register(req, res, next) {
-    userService.validate(req)
-        .catch(err => next(err));
-    userService.create(req.body)
-        .then(() => res.json({}))
-        .catch(err => next(err));
+    return userService.validate(req).then(validationresult =>{
+        if(!validationresult.isEmpty()) {
+            return next(new Error("Validation Error"))
+        }
+        return userService.create(req.body).then(() => res.json({message: "success"}));
+    }).catch(e => next(e));
+    // userService.validate(req)
+    //     .catch(err => next(err));
+
+    // userService.create(req.body)
+    //     .then(() => res.json({}))
+    //     .catch(err => next(err));
 };
 
 function authenticate(req, res, next) {
@@ -25,12 +32,11 @@ function authenticate(req, res, next) {
 };
 
 function getById(req, res, next) {
-    userService.getById(req.params.id)
+    return userService.getById(req.params.id)
         .then(user => user ? res.json(user) : res.sendStatus(404))
         .catch(err => next(err));
 };
 
 function logout(req, res, next) {
-    userService.logout()
-
+    return userService.logout()
 }

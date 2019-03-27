@@ -13,6 +13,9 @@ import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 import { red } from '@material-ui/core/colors';
 
+// import {user} from '../services';
+
+
 
 export class LoginForm extends Component {
     constructor(props) {
@@ -26,7 +29,7 @@ export class LoginForm extends Component {
     }
 
     handleChange = (event) => {
-        event.preventDefault();
+        event.preventDefault(); //required?
         this.setState({ [event.target.name]: event.target.value })
     }
 
@@ -111,8 +114,9 @@ export class LoginForm extends Component {
                             name="email"
                             floatingLabelText="Email"
                             value={this.state.email}
-                            onChange={e => this.handleChange(e)}
+                            onChange={this.handleChange}
                             errorText={this.state.emailError}
+                            error={!!this.state.emailError}
                         />
                         <br />
                         <TextField
@@ -121,17 +125,18 @@ export class LoginForm extends Component {
                             value={this.state.password}
                             onChange={e => this.handleChange(e)}
                             errorText={this.state.passwordError}
+                            error={!!this.state.passwordError}
                             type="password"
                             floatingLabelText="Password" />
                         <br />
                         <div style={{ display: 'inline-flex' }}>
-                        <FormControlLabel
-                            control={<Checkbox value="remember" color="primary" />}
-                            label="Remember me"
-                        />
-                        <Typography component="h1" variant="body1">
-                        <Link to="/register" component={RouterLink} className={classes.Link}>Not registered?</Link>
-                        </Typography>
+                            <FormControlLabel
+                                control={<Checkbox value="remember" color="primary" />}
+                                label="Remember me"
+                            />
+                            <Typography component="h1" variant="body1">
+                            <Link to="/register" component={RouterLink} className={classes.Link}>Not registered?</Link>
+                            </Typography>
                         </div>
                         <br />
                         
@@ -146,6 +151,7 @@ export class LoginForm extends Component {
                             primary />
                     </form>
                 </Paper>
+                {this.state.error && <div>error </div>}
             </MuiThemeProvider>
         )
     }

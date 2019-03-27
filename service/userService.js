@@ -11,9 +11,9 @@ module.exports = {
 
 const User = require('../models/user');
 
-async function create(userParam) {
-    const email = userParam.email;
-    const password = userParam.password;
+async function create({email, password, ...rest}) {
+    // const email = userParam.email;
+    // const password = userParam.password;
     if (await User.findOne({ email})) {
         throw new Error(`Email '${email}' is already taken`);
     }
@@ -21,28 +21,32 @@ async function create(userParam) {
     console.log(email);
     console.log(password);
 
-    const user = new User({
-      email,
-      password
-    });
+    // const user = new User({
+    //   email,
+    //   password
+    // });
 
-    // hash password
-    if (password) {
-        user.password = bcrypt.hashSync(password, 10);
-    }
-    // save user
-    user.save();
+    return bcrypt
+        .hash(password, 10)
+        .then(ecryptedPassword => new User({
+            email, 
+            ecryptedPassword
+        }).save());
+
+    // user.password = bcrypt.hashSync(password, 10);
+    // // save user
+    // return user.save();
 };
 
-async function validate(req) {
+function validate(req) {
     // input must be an email
  check('email').isEmail();
   // password must be at least 5 chars long
 check('password').isLength({ min: 5 });
-const errors = await validationResult(req);
-if (!errors.isEmpty()) {
-    throw new Error("Input is invalid");
-  }
+return validationResult(req);
+// if (!errors.isEmpty()) {
+//     throw new Error("Input is invalid");
+//   }
 };
 
 async function authenticate({ email, password }) {
@@ -57,8 +61,28 @@ async function authenticate({ email, password }) {
     }
 }
 
+//redundant
 async function getById(id) {
     return await User.findById(id);
 }
+
+// Examples
+// async function changeName(id) {
+//     const user = await User.findById(id);
+//     user.name = "John Doe";
+//     await user.save();
+
+//     return user;
+// }
+
+// function changeNamePromise(id) {
+//     return User.findById(id).then(user => {
+//         user.name = "John Doe";
+//         return user.save().then(() => user);
+//     })
+// }
+
+
+// changeNamePromise(123).then(u => {...changeNamePromise.})
 
 
