@@ -1,19 +1,10 @@
 import React, { Component } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-import Link from '@material-ui/core/Link';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import TextField from 'material-ui/TextField';
-import Paper from 'material-ui/Paper';
-import RaisedButton from 'material-ui/RaisedButton';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 import { red } from '@material-ui/core/colors';
-
-// import {user} from '../services';
+import LoginContainer from './LoginContainer';
+import services from '../services/index';
 
 
 
@@ -26,6 +17,10 @@ export class LoginForm extends Component {
             password: '',
             passwordError: ''
         }
+    }
+
+    componentDidMount() {
+        console.log(services);
     }
 
     handleChange = (event) => {
@@ -105,54 +100,9 @@ export class LoginForm extends Component {
     render() {
         const { classes } = this.props;
         return (
-            <MuiThemeProvider>
-                <Paper className={classes.paper}>
-                    <Typography component="h1" variant="h5">Sign in</Typography>
-                    <form onSubmit={e => this.handleSubmit(e)} className={classes.form}>
-                        <TextField
-                            className={classes.email}
-                            name="email"
-                            floatingLabelText="Email"
-                            value={this.state.email}
-                            onChange={this.handleChange}
-                            errorText={this.state.emailError}
-                            error={!!this.state.emailError}
-                        />
-                        <br />
-                        <TextField
-                            className={classes.password}
-                            name="password"
-                            value={this.state.password}
-                            onChange={e => this.handleChange(e)}
-                            errorText={this.state.passwordError}
-                            error={!!this.state.passwordError}
-                            type="password"
-                            floatingLabelText="Password" />
-                        <br />
-                        <div style={{ display: 'inline-flex' }}>
-                            <FormControlLabel
-                                control={<Checkbox value="remember" color="primary" />}
-                                label="Remember me"
-                            />
-                            <Typography component="h1" variant="body1">
-                            <Link to="/register" component={RouterLink} className={classes.Link}>Not registered?</Link>
-                            </Typography>
-                        </div>
-                        <br />
-                        
-                        {/* if there's a login error */}
-
-                        {this.state.loginError ? <p style={{color: 'red'}}>Bad credentials. Please try again</p> : null}
-
-                        <RaisedButton
-                            className={classes.button}
-                            label="Submit"
-                            onClick={e => this.handleSubmit(e)}
-                            primary />
-                    </form>
-                </Paper>
-                {this.state.error && <div>error </div>}
-            </MuiThemeProvider>
+                <LoginContainer 
+                handleChange={this.handleChange} 
+                handleSubmit={this.handleSubmit}/>
         )
     }
 }

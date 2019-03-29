@@ -84,13 +84,13 @@ export class RegisterForm extends Component {
             <MuiThemeProvider>
                 <Paper className={classes.paper}>
                     <Typography component="h1" variant="h5">Register new user</Typography>
-                    <form onSubmit={e => this.handleSubmit(e)} className={classes.form}>
+                    <form onSubmit={this.handleSubmit} className={classes.form}>
                         <TextField
                             className={classes.email}
                             name="email"
                             floatingLabelText="Email"
                             value={this.state.email}
-                            onChange={e => this.handleChange(e)}
+                            onChange={this.handleChange}
                             errorText={this.state.emailError}
                         />
                         <br />
@@ -98,7 +98,7 @@ export class RegisterForm extends Component {
                             className={classes.password}
                             name="password"
                             value={this.state.password}
-                            onChange={e => this.handleChange(e)}
+                            onChange={this.handleChange}
                             errorText={this.state.passwordError}
                             type="password"
                             floatingLabelText="Password" />
@@ -106,7 +106,7 @@ export class RegisterForm extends Component {
                         <RaisedButton
                             className={classes.button}
                             label="Register"
-                            onClick={e => this.handleSubmit(e)}
+                            onClick={this.handleSubmit}
                             primary />
                     </form>
                 </Paper>
